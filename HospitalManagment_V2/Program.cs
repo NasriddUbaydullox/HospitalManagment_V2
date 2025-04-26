@@ -1,13 +1,18 @@
 using HospitalManagment_V2.classes;
 using HospitalManagment_V2.DataAccess;
+using HospitalManagment_V2.Examples;
 using HospitalManagment_V2.MapperProfile;
 using HospitalManagment_V2.Middleware;
 using HospitalManagment_V2.Repository;
 using HospitalManagment_V2.Services;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Sats.PostgreSqlDistributedCache;
 using Serilog;
+using Swashbuckle.AspNetCore.Filters;
 using System.Reflection;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,13 +21,27 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.EnableAnnotations();
+    
+
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1",
+        Title = "Very Good Thing",
+        Description = "Very Very Good"
+    });
+    options.ExampleFilters();
+});
 
 builder.Services.Configure<FileStorage>(builder.Configuration.GetSection("MedicalRecordsPath"));
 builder.Services.Configure<FileStorage>(builder.Configuration.GetSection("ReportsPath"));
 
 builder.Services.Configure<AppointmentSettings>(builder.Configuration.GetSection("CancellationDeadlineHours"));
 builder.Services.Configure<AppointmentSettings>(builder.Configuration.GetSection("NotificationReminderHours"));
+
+builder.Services.AddSwaggerExamplesFromAssemblyOf<DoctorExample>();
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
@@ -33,6 +52,46 @@ builder.Services.AddScoped<IPatientService, PatientService>();
 
 builder.Services.AddScoped<ICorroletionId, CorreletionId>();
 
+// RateLimiter
+
+builder.Services.AddRateLimiter(rateLimiterOptions =>
+{
+    rateLimiterOptions.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+    //rateLimiterOptions.AddFixedWindowLimiter("fixed", options =>
+    //{
+    //    options.PermitLimit = 10; // 10 ta request
+    //    options.Window = TimeSpan.FromSeconds(10);  // 10 sekund ichida
+    //    options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;  // 1 chi kirgan 1 chi chiqadi
+    //    options.QueueLimit = 5;  // agar 10 ta request kelsa ularning 5 tasi ishlaydi qogani kutadi 5 tani ignore qmedi
+    //});
+    //rateLimiterOptions.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
+
+    //    RateLimitPartition.GetFixedWindowLimiter(
+    //        partitionKey: httpContext.Connection.RemoteIpAddress.ToString(),
+    //        factory: _ => new FixedWindowRateLimiterOptions
+    //        {
+    //            //AutoReplenishment = true,
+    //            PermitLimit = 5,
+    //            //QueueLimit = 0,
+    //            Window = TimeSpan.FromSeconds(10)
+    //        }));
+
+    rateLimiterOptions.AddSlidingWindowLimiter("sliding", options =>
+    {
+        options.PermitLimit = 5;
+        options.Window = TimeSpan.FromSeconds(10);
+        options.SegmentsPerWindow = 2;
+    });
+
+    //rateLimiterOptions.AddTokenBucketLimiter("tokenBucket", options =>
+    //{
+    //    options.TokenLimit = 5;
+    //    options.ReplenishmentPeriod = TimeSpan.FromSeconds(3);
+    //    options.TokensPerPeriod = 3;
+    //    options.AutoReplenishment = true;
+    //});
+});
+
 //builder.Services.AddPostgresDistributedCache(options =>
 //{
 //    options.ConnectionString = "Server=localhost;Port=5432;Database=HospitalManagmentV2;User Id=postgres;Password=postgres;";
@@ -42,7 +101,18 @@ builder.Services.AddStackExchangeRedisCache(options =>
 {
     options.Configuration = "localhost";
     options.InstanceName = "test";
-}); 
+});
+
+//builder.Services.AddCors(options =>
+//{
+//    options.AddPolicy("frontend",
+//        policy =>
+//        {
+//            policy.WithOrigins("http://localhost:3000") //URL
+//                  .AllowAnyHeader()
+//                  .AllowAnyMethod();
+//        });
+//});
 
 builder.Services.AddMemoryCache();
 
@@ -60,7 +130,7 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()  // Logs to console
     .WriteTo.Seq("http://localhost:5341")  // Logs to Seq
     .Enrich.FromLogContext()
-    .MinimumLevel.Information() 
+    .MinimumLevel.Information()
     .CreateLogger();
 
 // Replace default logging with Serilog
@@ -73,8 +143,13 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+    });
 }
+
+app.UseRateLimiter();
 
 app.UseSerilogRequestLogging();
 
@@ -83,6 +158,16 @@ app.UseMiddleware<CorreletionIdMiddleware>();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger(options =>
+    {
+        options.SerializeAsV2 = true; // Serialize as Swagger 2.0
+    });
+}   
+
+//app.UseCors("frontend");  //Cors
 
 app.MapControllers();
 

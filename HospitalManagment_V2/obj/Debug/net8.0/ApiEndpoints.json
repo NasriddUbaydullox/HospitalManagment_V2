@@ -1,6 +1,31 @@
 [
   {
     "ContainingType": "HospitalManagment_V2.Controllers.TestController",
+    "Method": "GetAllDoctors",
+    "RelativePath": "api/Test",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IList\u00601[[HospitalManagment_V2.Dtos.DoctorDto, HospitalManagment_V2, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 404
+      }
+    ]
+  },
+  {
+    "ContainingType": "HospitalManagment_V2.Controllers.TestController",
     "Method": "GetAll",
     "RelativePath": "api/Test/get-all-patient",
     "HttpMethod": "GET",

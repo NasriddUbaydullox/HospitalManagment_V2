@@ -52,7 +52,7 @@ public class PatientBlankRepository : IPatientBlankRepository
 
     public async Task DeleteAsync(int id)
     {
-        var patient = _context.PatientBlanks.FindAsync(id);
+        var patient = await _context.PatientBlanks.FindAsync(id);
         if(patient != null)
         {
             _context.Remove(patient);

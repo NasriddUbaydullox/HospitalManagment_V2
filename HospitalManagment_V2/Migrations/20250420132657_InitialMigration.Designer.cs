@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HospitalManagment_V2.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20250315052753_intitial-migration")]
-    partial class intitialmigration
+    [Migration("20250420132657_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -135,6 +135,9 @@ namespace HospitalManagment_V2.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<int>("PatientId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Severity")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");

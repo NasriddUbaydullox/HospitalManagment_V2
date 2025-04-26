@@ -70,7 +70,7 @@ public class PatientRepository : IPatientRepository
 
     public async Task DeleteAsync (int id)
     {
-        var patient = _context.Patients.FindAsync(id);
+        var patient = await _context.Patients.FindAsync(id);
         if(patient != null)
         {
             _context.Remove(patient);

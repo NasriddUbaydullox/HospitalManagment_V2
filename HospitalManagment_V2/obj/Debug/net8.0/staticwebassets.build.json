@@ -1,11 +1,12 @@
 {
   "Version": 1,
-  "Hash": "7sJiwQd7EyCFbeTgKhEtwVA8IvGOGLE4+hkOikn/53Q=",
+  "Hash": "VFXpg/L7BAw699yFx6QEp/4FI32u971oSGd0uIoZOtg=",
   "Source": "HospitalManagment_V2",
   "BasePath": "_content/HospitalManagment_V2",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
   "DiscoveryPatterns": [],
-  "Assets": []
+  "Assets": [],
+  "Endpoints": []
 }

@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\user\\source\\repos\\HospitalManagment_V2\\HospitalManagment_V2.csproj": {}
+    "D:\\ZipProjects\\HospitalManagment_V2\\HospitalManagment_V2.csproj": {}
   },
   "projects": {
-    "C:\\Users\\user\\source\\repos\\HospitalManagment_V2\\HospitalManagment_V2.csproj": {
+    "D:\\ZipProjects\\HospitalManagment_V2\\HospitalManagment_V2.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\user\\source\\repos\\HospitalManagment_V2\\HospitalManagment_V2.csproj",
+        "projectUniqueName": "D:\\ZipProjects\\HospitalManagment_V2\\HospitalManagment_V2.csproj",
         "projectName": "HospitalManagment_V2",
-        "projectPath": "C:\\Users\\user\\source\\repos\\HospitalManagment_V2\\HospitalManagment_V2.csproj",
+        "projectPath": "D:\\ZipProjects\\HospitalManagment_V2\\HospitalManagment_V2.csproj",
         "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\user\\source\\repos\\HospitalManagment_V2\\obj\\",
+        "outputPath": "D:\\ZipProjects\\HospitalManagment_V2\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
           "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -40,7 +44,8 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "9.0.200"
       },
       "frameworks": {
         "net8.0": {
@@ -102,7 +107,19 @@
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
-              "version": "[6.6.2, )"
+              "version": "[8.1.1, )"
+            },
+            "Swashbuckle.AspNetCore.Annotations": {
+              "target": "Package",
+              "version": "[8.1.1, )"
+            },
+            "Swashbuckle.AspNetCore.Filters": {
+              "target": "Package",
+              "version": "[8.0.2, )"
+            },
+            "Swashbuckle.AspNetCore.ReDoc": {
+              "target": "Package",
+              "version": "[8.1.1, )"
             }
           },
           "imports": [
@@ -124,7 +141,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.203/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

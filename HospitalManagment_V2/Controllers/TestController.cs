@@ -1,19 +1,26 @@
-﻿using AutoMapper;
+﻿using System.Net;
+using AutoMapper;
 using HospitalManagment_V2.classes;
 using HospitalManagment_V2.DataAccess;
 using HospitalManagment_V2.DataAccess.Entities;
 using HospitalManagment_V2.Dtos;
+using HospitalManagment_V2.Examples;
 using HospitalManagment_V2.Repository;
 using HospitalManagment_V2.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.Logging;
+using Swashbuckle.AspNetCore.Annotations;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace HospitalManagment_V2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    //[EnableRateLimiting("fixed")]
     public class TestController : ControllerBase
     {
+        private readonly IDoctorRepository _doc;
         private readonly ILogger<TestController> _logger;
         private readonly ICorroletionId _corrId;
         private readonly Context _context;
@@ -26,8 +33,10 @@ namespace HospitalManagment_V2.Controllers
             ILogger<TestController> logger, Context context , 
             IMapper mapper , IPatientRepository patientRepository,
             IPatientService patientService,
-            IPatientRepository patient)
+            IPatientRepository patient,
+            IDoctorRepository doctor)
         {
+            _doc = doctor;
             _logger = logger;
             _corrId = corroletionId;
             _context = context;
@@ -46,18 +55,29 @@ namespace HospitalManagment_V2.Controllers
         }
 
         [HttpGet ("get-all-patient")]
+        [EnableRateLimiting("sliding")]
         public async Task<IActionResult> GetAll()
         {
-            
             return Ok(_patientService.GetAllPatients());
         }
 
         [HttpGet ("get-patient-by-id")]
 
+
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             return Ok(await _patientRepos.GetByIdAsync(id));
         }
-    }
 
+        [HttpGet]
+        [SwaggerOperation("Get all Doctors")]
+        [SwaggerResponseExample((int)HttpStatusCode.OK, typeof(DoctorExample))]
+        [SwaggerResponse((int)HttpStatusCode.OK, "Get all menu", typeof(IList<DoctorDto>))]
+        [SwaggerResponse((int)HttpStatusCode.NotFound, "Menu not found")]
+        public async Task<IActionResult> GetAllDoctors()
+        {
+            return Ok(await _doc.GetAllAsync());
+        }
+
+    }
 }

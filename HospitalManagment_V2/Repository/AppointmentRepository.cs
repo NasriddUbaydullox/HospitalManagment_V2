@@ -48,7 +48,7 @@ public class AppointmentRepository : IAppointmentRepository
 
     public async Task DeleteAsync(int id)
     {
-        var appointment = _context.Appointments.FindAsync(id);
+        var appointment = await _context.Appointments.FindAsync(id);
         if(appointment != null)
         {
             _context.Remove(appointment);
