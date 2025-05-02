@@ -1,3 +1,5 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using HospitalManagment_V2.classes;
 using HospitalManagment_V2.DataAccess;
 using HospitalManagment_V2.Examples;
@@ -5,6 +7,7 @@ using HospitalManagment_V2.MapperProfile;
 using HospitalManagment_V2.Middleware;
 using HospitalManagment_V2.Repository;
 using HospitalManagment_V2.Services;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -24,7 +27,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
     options.EnableAnnotations();
-    
+
 
     options.SwaggerDoc("v1", new OpenApiInfo
     {
@@ -48,22 +51,29 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Program>());
+
 builder.Services.AddScoped<IPatientService, PatientService>();
 
 builder.Services.AddScoped<ICorroletionId, CorreletionId>();
+
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
+
+//builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
 
 // RateLimiter
 
 builder.Services.AddRateLimiter(rateLimiterOptions =>
 {
     rateLimiterOptions.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
-    //rateLimiterOptions.AddFixedWindowLimiter("fixed", options =>
-    //{
-    //    options.PermitLimit = 10; // 10 ta request
-    //    options.Window = TimeSpan.FromSeconds(10);  // 10 sekund ichida
-    //    options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;  // 1 chi kirgan 1 chi chiqadi
-    //    options.QueueLimit = 5;  // agar 10 ta request kelsa ularning 5 tasi ishlaydi qogani kutadi 5 tani ignore qmedi
-    //});
+    rateLimiterOptions.AddFixedWindowLimiter("fixed", options =>
+    {
+        options.PermitLimit = 10; // 10 ta request
+        options.Window = TimeSpan.FromSeconds(10);  // 10 sekund ichida
+        options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;  // 1 chi kirgan 1 chi chiqadi
+        options.QueueLimit = 5;  // agar 10 ta request kelsa ularning 5 tasi ishlaydi qogani kutadi 5 tani ignore qmedi
+    });
     //rateLimiterOptions.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
 
     //    RateLimitPartition.GetFixedWindowLimiter(
@@ -161,11 +171,17 @@ app.UseAuthorization();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger(options =>
-    {
-        options.SerializeAsV2 = true; // Serialize as Swagger 2.0
-    });
-}   
+
+	app.UseSwagger(options =>
+	{
+		options.SerializeAsV2 = true; // Serialize as Swagger 2.0
+	});
+
+	app.UseSwaggerUI(options =>
+	{
+		options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+	});
+}
 
 //app.UseCors("frontend");  //Cors
 

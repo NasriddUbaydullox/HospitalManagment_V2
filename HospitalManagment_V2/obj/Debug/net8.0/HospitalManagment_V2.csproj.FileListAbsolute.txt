@@ -476,3 +476,10 @@ D:\ZipProjects\HospitalManagment_V2\bin\Debug\net8.0\Swashbuckle.AspNetCore.Anno
 D:\ZipProjects\HospitalManagment_V2\bin\Debug\net8.0\Swashbuckle.AspNetCore.Filters.dll
 D:\ZipProjects\HospitalManagment_V2\bin\Debug\net8.0\Swashbuckle.AspNetCore.Filters.Abstractions.dll
 D:\ZipProjects\HospitalManagment_V2\bin\Debug\net8.0\Swashbuckle.AspNetCore.ReDoc.dll
+C:\Users\user\Desktop\GitHub\HospitalManagment_V2\HospitalManagment_V2\bin\Debug\net8.0\Scrutor.dll
+C:\Users\user\Desktop\GitHub\HospitalManagment_V2\HospitalManagment_V2\bin\Debug\net8.0\Swashbuckle.AspNetCore.Annotations.dll
+C:\Users\user\Desktop\GitHub\HospitalManagment_V2\HospitalManagment_V2\bin\Debug\net8.0\Swashbuckle.AspNetCore.Filters.dll
+C:\Users\user\Desktop\GitHub\HospitalManagment_V2\HospitalManagment_V2\bin\Debug\net8.0\Swashbuckle.AspNetCore.Filters.Abstractions.dll
+C:\Users\user\Desktop\GitHub\HospitalManagment_V2\HospitalManagment_V2\bin\Debug\net8.0\Swashbuckle.AspNetCore.ReDoc.dll
+C:\Users\user\Desktop\GitHub\HospitalManagment_V2\HospitalManagment_V2\bin\Debug\net8.0\MediatR.dll
+C:\Users\user\Desktop\GitHub\HospitalManagment_V2\HospitalManagment_V2\bin\Debug\net8.0\MediatR.Contracts.dll

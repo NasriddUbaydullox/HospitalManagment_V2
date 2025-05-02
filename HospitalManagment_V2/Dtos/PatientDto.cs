@@ -5,11 +5,12 @@ namespace HospitalManagment_V2.Dtos;
 
 public class PatientDto
 {
-    public string FullName { get; set; }
-    public string? DateOfBirth { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public DateOnly? DateOfBirth { get; set; }
     public bool IsActive { get; set; }
-    public string RegisteredDate { get; set; }
+    public DateTime RegisteredDate { get; set; }
     public int? PatientBlankId { get; set; }
-    public string BlankIdentifier { get; set; }
+    //public string BlankIdentifier { get; set; }
 }
 

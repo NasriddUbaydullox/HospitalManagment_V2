@@ -13,21 +13,21 @@ public class DoctorExample : IExamplesProvider<DoctorDto>
             Firstname = "John",
             Lastname = "Doe",
             IsActive = true,
-            Speciality = new Speciality
-            {
-                Id = 1,
-                Name = "Not good"
-            },
-            Appointments = new List<AppointmentDto>
-            {
-                new AppointmentDto
-                {
-                       IsActive = true,
-                       PatientId = 1,
-                       DoctorId = 1,
-                       AppointmentDate = DateTime.Now,
-                }
-            }
+            //Speciality = new Speciality
+            //{
+            //    Id = 1,
+            //    Name = "Not good"
+            //},
+            //Appointments = new List<AppointmentDto>
+            //{
+            //    new AppointmentDto
+            //    {
+            //           IsActive = true,
+            //           PatientId = 1,
+            //           DoctorId = 1,
+            //           AppointmentDate = DateTime.Now,
+            //    }
+            //}
 
         };
     }

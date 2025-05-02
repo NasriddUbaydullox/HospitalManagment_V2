@@ -23,16 +23,14 @@ namespace HospitalManagment_V2.DataAccess
                 builder.HasOne(r => r.Patient)
                     .WithMany(r => r.Appointments);
 
-                builder.HasOne(r => r.Doctor)
-                    .WithMany(r => r.Appointments);
+               
             });
 
             modelBuilder.Entity<Doctor>(builder =>
             {
                 builder.HasKey(r => r.Id);
 
-                builder.HasOne(r => r.Speciality)
-                    .WithMany();
+                
             });
 
             modelBuilder.Entity<Patient>(builder =>

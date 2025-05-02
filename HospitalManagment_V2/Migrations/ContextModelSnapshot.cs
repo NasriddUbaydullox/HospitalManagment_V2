@@ -75,8 +75,6 @@ namespace HospitalManagment_V2.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SpecialityId");
-
                     b.ToTable("Doctors");
                 });
 
@@ -165,7 +163,7 @@ namespace HospitalManagment_V2.Migrations
             modelBuilder.Entity("HospitalManagment_V2.DataAccess.Entities.Appointment", b =>
                 {
                     b.HasOne("HospitalManagment_V2.DataAccess.Entities.Doctor", "Doctor")
-                        .WithMany("Appointments")
+                        .WithMany()
                         .HasForeignKey("DoctorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -181,17 +179,6 @@ namespace HospitalManagment_V2.Migrations
                     b.Navigation("Patient");
                 });
 
-            modelBuilder.Entity("HospitalManagment_V2.DataAccess.Entities.Doctor", b =>
-                {
-                    b.HasOne("HospitalManagment_V2.DataAccess.Entities.Speciality", "Speciality")
-                        .WithMany()
-                        .HasForeignKey("SpecialityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Speciality");
-                });
-
             modelBuilder.Entity("HospitalManagment_V2.DataAccess.Entities.PatientBlank", b =>
                 {
                     b.HasOne("HospitalManagment_V2.DataAccess.Entities.Patient", "patient")
@@ -201,11 +188,6 @@ namespace HospitalManagment_V2.Migrations
                         .IsRequired();
 
                     b.Navigation("patient");
-                });
-
-            modelBuilder.Entity("HospitalManagment_V2.DataAccess.Entities.Doctor", b =>
-                {
-                    b.Navigation("Appointments");
                 });
 
             modelBuilder.Entity("HospitalManagment_V2.DataAccess.Entities.Patient", b =>

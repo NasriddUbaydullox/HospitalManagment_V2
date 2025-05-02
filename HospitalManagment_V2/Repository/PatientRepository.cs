@@ -22,12 +22,11 @@ public interface IPatientRepository
 public class PatientRepository : IPatientRepository
 {
     private readonly Context _context;
-    private readonly IDistributedCache _cache;
 
-    public PatientRepository(Context context , IDistributedCache cache)
+    public PatientRepository(Context context)
     {
         _context = context;
-        _cache = cache;
+
     }
 
     public IQueryable<Patient> GetAll()
@@ -38,20 +37,7 @@ public class PatientRepository : IPatientRepository
 
     public async Task<Patient> GetByIdAsync(int id)
     {
-        var cacheDoctor = await _cache.GetStringAsync(id.ToString());
-        if(cacheDoctor is not null)
-        {
-            return JsonSerializer.Deserialize<Patient>(cacheDoctor);
-        }
-
         var doctor = await _context.Patients.FindAsync(id);
-
-        if(doctor is not null)
-        {
-            var serialized = JsonSerializer.Serialize(doctor);
-
-            await _cache.SetStringAsync(id.ToString(), serialized);
-        }
 
         return doctor;
     }
@@ -59,7 +45,7 @@ public class PatientRepository : IPatientRepository
     public async Task AddAsync(Patient patient)
     {
         await _context.AddAsync(patient);
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync();  
     }
 
     public async Task UpdateAsync(Patient patient)

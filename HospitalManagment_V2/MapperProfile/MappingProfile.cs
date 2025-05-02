@@ -7,10 +7,9 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        CreateMap<Patient, PatientDto>()
-            .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => $"{src.FirstName} {src.LastName}"))
-            .ForMember(dest => dest.DateOfBirth, opt => opt.MapFrom(src => src.DateOfBirth.ToString()))
-            .ForMember(dest => dest.BlankIdentifier, opt => opt.MapFrom(src => src.PatientBlank.BlankIdentifier));
-        
+        //CreateMap<Patient, PatientDto>()
+            //.ForMember(dest => dest.FullName, opt => opt.MapFrom(src => $"{src.FirstName} {src.LastName}"))
+            //.ForMember(dest => dest.DateOfBirth, opt => opt.MapFrom(src => src.DateOfBirth.ToString()))
+            //.ForMember(dest => dest.BlankIdentifier, opt => opt.MapFrom(src => src.PatientBlank.BlankIdentifier));
     }
 }
